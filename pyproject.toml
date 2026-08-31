@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vrolora"
+version = "0.1.0"
+description = "RLVR-driven MoE routing for steerable pluralistic alignment"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  {name = "Jing Wang"},
+  {name = "Yaomin Wu"},
+  {name = "Yinglin Wang"},
+  {name = "Yitong Yang"},
+]
+dependencies = [
+  "accelerate==1.11.0",
+  "datasets==4.4.1",
+  "numpy>=2.1,<3",
+  "peft==0.17.1",
+  "safetensors==0.6.2",
+  "torch>=2.5",
+  "transformers==4.57.1",
+  "trl==0.23.1",
+]
+
+[project.optional-dependencies]
+train = ["deepspeed==0.18.2; platform_system != 'Windows'"]
+dev = ["pytest>=8", "ruff>=0.11"]
+
+[project.urls]
+Homepage = "https://github.com/Bob-Annette/V-RoLoRA"
+Paper = "https://aclanthology.org/2026.findings-acl.1377/"
+
+[project.scripts]
+vrolora-sft = "vrolora.cli.train_sft:main"
+vrolora-grpo = "vrolora.cli.train_grpo:main"
+vrolora-generate = "vrolora.cli.generate:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the ACL 2026 paper."
+title: "V-RoLoRA: RLVR-Driven MoE Routing for Steerable Pluralistic Alignment"
+type: software
+version: 0.1.0
+date-released: 2026-07-01
+url: "https://github.com/Bob-Annette/V-RoLoRA"
+license: MIT
+authors:
+  - family-names: Wang
+    given-names: Jing
+  - family-names: Wu
+    given-names: Yaomin
+  - family-names: Wang
+    given-names: Yinglin
+  - family-names: Yang
+    given-names: Yitong
+preferred-citation:
+  type: conference-paper
+  title: "V-RoLoRA: RLVR-Driven MoE Routing for Steerable Pluralistic Alignment"
+  authors:
+    - family-names: Wang
+      given-names: Jing
+    - family-names: Wu
+      given-names: Yaomin
+    - family-names: Wang
+      given-names: Yinglin
+    - family-names: Yang
+      given-names: Yitong
+  collection-title: "Findings of the Association for Computational Linguistics: ACL 2026"
+  year: 2026
+  month: 7
+  start: 27665
+  end: 27682
+  publisher:
+    name: Association for Computational Linguistics
+  conference:
+    name: "Findings of the Association for Computational Linguistics: ACL 2026"
+  doi: 10.18653/v1/2026.findings-acl.1377
+  url: "https://aclanthology.org/2026.findings-acl.1377/"

@@ -1,0 +1,4 @@
+V-RoLoRA includes code adapted from Hugging Face PEFT 0.17.1 and TRL 0.23.1.
+Those portions remain available under the Apache License 2.0; see
+THIRD_PARTY_LICENSES/Apache-2.0.txt. All other project code is distributed under
+the repository's MIT License.
