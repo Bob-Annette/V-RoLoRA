@@ -18,15 +18,9 @@ V-RoLoRA controls language-model behavior with a discrete, multi-dimensional val
 3. a shared trainable router that produces sample-level expert weights; and
 4. RLVR post-training with GRPO, using a multi-label discriminator as a conditional-consistency verifier.
 
-```text
-condition vector v ──> fixed projection ──> shared router ──> LoRA expert mixture
-                                                                │
-prompt x ───────────────────────────────────────────────────────> LLM ──> response y
-                                                                           │
-target v <──────── conditional-consistency reward <──────── discriminator ──┘
-                                           │
-                                           └──────────── GRPO update
-```
+[![V-RoLoRA framework](assets/frame.png)](assets/frame.pdf)
+
+*Overview of the V-RoLoRA framework. Click the figure to open the vector PDF.*
 
 The router is conditioned once per sample and its expert weights are broadcast across token positions, providing sequence-consistent control. The backbone and condition projection remain frozen; the expert adapters and router are optimized during supervised cold-start training and RLVR.
 
