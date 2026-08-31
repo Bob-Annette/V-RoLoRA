@@ -38,6 +38,7 @@ Paper = "https://aclanthology.org/2026.findings-acl.1377/"
 vrolora-sft = "vrolora.cli.train_sft:main"
 vrolora-grpo = "vrolora.cli.train_grpo:main"
 vrolora-generate = "vrolora.cli.generate:main"
+vrolora-train-verifier = "vrolora.cli.train_verifier:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

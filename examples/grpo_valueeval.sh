@@ -10,7 +10,7 @@ torchrun --nproc_per_node=2 -m vrolora.cli.train_grpo \
   --projection_dim 64 \
   --lora_rank 32 \
   --lora_alpha 32 \
-  --verifier_model_name_or_path Qwen/Qwen3-0.6B \
+  --verifier_model_name_or_path Qwen/Qwen3-0.6B-Base \
   --verifier_adapter_path models/value-verifier \
   --reward_task value \
   --output_dir outputs/valueeval/grpo \

@@ -12,19 +12,7 @@ import torch
 from peft import PeftModel
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-VALUE_NAMES = (
-    "Achievement",
-    "Benevolence",
-    "Conformity",
-    "Hedonism",
-    "Power",
-    "Security",
-    "Self-Direction",
-    "Stimulation",
-    "Tradition",
-    "Universalism",
-)
-MORAL_DIMENSIONS = ("Care", "Fairness", "Liberty", "Loyalty", "Authority", "Sanctity")
+from vrolora.verifier import MORAL_DIMENSIONS, VALUE_NAMES, build_verifier_text
 
 VALUE_EVAL_PATTERN = re.compile(
     r'(?P<stance>in favor of|against)\s+with that because\s+(?P<premise>.+?)"\s+'
@@ -128,12 +116,7 @@ class VerifierReward:
         return rewards
 
     def _predict(self, prompt: str, completion: str) -> torch.Tensor:
-        if self.config.task == "mic":
-            classifier_text = f"{prompt}\n{completion}"
-        else:
-            classifier_text = completion
-            if not classifier_text.lstrip().lower().startswith("i would say"):
-                classifier_text = f'I would say, "I {classifier_text}'
+        classifier_text = build_verifier_text(prompt, completion, self.config.task)
         encoded = self.tokenizer(
             classifier_text,
             return_tensors="pt",

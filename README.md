@@ -28,14 +28,15 @@ The router is conditioned once per sample and its expert weights are broadcast a
 
 ```text
 configs/                 DeepSpeed configuration
-examples/                Relative-path SFT and GRPO launch scripts
+examples/                Relative-path verifier, SFT, and GRPO launch scripts
 src/vrolora/peft/        V-RoLoRA adapter, router, and PEFT registration
 src/vrolora/data.py      SFT/GRPO dataset formatting
 src/vrolora/rewards.py   Discriminator-based consistency reward
+src/vrolora/verifier.py  Shared discriminator preprocessing and metrics
 src/vrolora/trainer_grpo.py
                          GRPO trainer with condition-routing propagation
-src/vrolora/cli/         SFT, GRPO, and generation entry points
-tests/                   Lightweight routing tests
+src/vrolora/cli/         Verifier, SFT, GRPO, and generation entry points
+tests/                   Routing, serialization, and verifier tests
 ```
 
 Raw datasets, processed data, model weights, checkpoints, logs, predictions, and metric dumps are intentionally not included.
@@ -90,7 +91,19 @@ The entire `data/` directory is ignored by Git to prevent accidental publication
 
 ## Training
 
-V-RoLoRA uses two stages.
+V-RoLoRA policy training uses two stages. Its external discriminator is trained independently and must be available before the GRPO stage.
+
+### External discriminator
+
+The paper uses two separate LoRA discriminators based on `Qwen/Qwen3-0.6B-Base`: a 10-label ValueEval verifier and a 6-label MIC verifier. Train either one with:
+
+```bash
+bash examples/train_verifier_valueeval.sh
+# or
+bash examples/train_verifier_mic.sh
+```
+
+The scripts use the paper configuration: maximum sequence length 768, learning rate `2e-4`, three epochs, batch size 4, LoRA rank 8, LoRA scale 16, dropout 0.05, and a decision threshold of 0.5. Multi-label BCE uses per-label positive-class weights calculated from the training split. The resulting adapters are saved to `models/value-verifier` or `models/mic-verifier`; pretrained verifier weights are not distributed in this repository.
 
 ### 1. Supervised cold start
 
@@ -104,7 +117,7 @@ The paper configuration uses rank 32, LoRA scale 32, eight experts, projection w
 
 ### 2. RLVR with GRPO
 
-Train a multi-label condition discriminator separately, place its adapter under `models/`, and run:
+After training the corresponding discriminator, run:
 
 ```bash
 bash examples/grpo_valueeval.sh
